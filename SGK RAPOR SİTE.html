@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SGK Rapor Analiz — Eczacılar için Akıllı Reçete Kontrol</title>
+<meta name="description" content="Reçeteyi yükle, SGK ödeme kararını saniyede gör. Kesinti riskini önle. Güncel SUT verileriyle otomatik analiz." />
+<style>
+  :root{
+    --yesil:#0B3D2E; --yesil2:#15795a; --acik:#22c55e; --acik2:#4ade80;
+    --bg:#f6f9f7; --kart:#ffffff; --gri:#5b6b63; --acikgri:#8b9a91; --cizgi:#e3ece7;
+    --golge:0 10px 40px rgba(11,61,46,.10);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--yesil);line-height:1.6;overflow-x:hidden}
+  a{text-decoration:none;color:inherit}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 24px}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:50;backdrop-filter:blur(12px);background:rgba(246,249,247,.8);border-bottom:1px solid var(--cizgi)}
+  nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
+  .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
+  .logo .rx{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--yesil2),var(--acik));display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 4px 14px rgba(34,197,94,.35)}
+  .navlinks{display:flex;gap:28px;font-size:14.5px;font-weight:500;color:var(--gri)}
+  .navlinks a:hover{color:var(--yesil2)}
+  .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--yesil2),var(--acik));color:#fff;padding:11px 22px;border-radius:11px;font-weight:700;font-size:14.5px;box-shadow:0 6px 20px rgba(34,197,94,.30);transition:transform .15s,box-shadow .15s;border:none;cursor:pointer}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(34,197,94,.42)}
+  .btn.dark{background:linear-gradient(135deg,#0B3D2E,#15795a)}
+  @media(max-width:760px){.navlinks{display:none}}
+
+  /* HERO */
+  .hero{position:relative;padding:90px 0 80px;overflow:hidden}
+  .hero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(800px 400px at 80% -5%,rgba(34,197,94,.16),transparent 60%),
+    radial-gradient(600px 400px at 0% 30%,rgba(21,121,90,.10),transparent 60%);z-index:-1}
+  .hero h1{font-size:clamp(34px,5.5vw,60px);line-height:1.08;letter-spacing:-.03em;font-weight:850;max-width:780px}
+  .hero h1 .grad{background:linear-gradient(120deg,var(--yesil2),var(--acik));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{font-size:clamp(16px,2.2vw,20px);color:var(--gri);max-width:620px;margin:22px 0 32px}
+  .hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+  .rozet{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--cizgi);color:var(--yesil2);padding:7px 15px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;box-shadow:var(--golge)}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--acik);box-shadow:0 0 0 4px rgba(34,197,94,.2);animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+  /* mock card */
+  .mock{margin-top:54px;background:var(--kart);border:1px solid var(--cizgi);border-radius:20px;box-shadow:var(--golge);overflow:hidden;max-width:880px}
+  .mock .bar{display:flex;gap:7px;padding:14px 18px;border-bottom:1px solid var(--cizgi);background:#fbfdfc}
+  .mock .bar i{width:11px;height:11px;border-radius:50%;background:#e0e7e3}
+  .mock .bar i:nth-child(1){background:#ff5f57}.mock .bar i:nth-child(2){background:#febc2e}.mock .bar i:nth-child(3){background:#28c840}
+  .mock .body{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:24px}
+  @media(max-width:680px){.mock .body{grid-template-columns:1fr}}
+  .panel{background:#fbfdfc;border:1px solid var(--cizgi);border-radius:13px;padding:18px}
+  .panel h4{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--acikgri);margin-bottom:12px}
+  .row{display:flex;justify-content:space-between;font-size:13.5px;padding:7px 0;border-bottom:1px dashed var(--cizgi)}
+  .row b{color:var(--yesil)}
+  .karar{text-align:center;padding:8px 0}
+  .karar .big{font-size:40px;font-weight:850;letter-spacing:-.03em}
+  .karar .ek4d{color:var(--acik)} .karar .pay{color:#16a34a}
+  .pill{display:inline-block;background:rgba(34,197,94,.12);color:#15795a;font-weight:700;font-size:12px;padding:5px 12px;border-radius:8px;margin-top:6px}
+  .uyari{font-size:12.5px;color:#b45309;background:#fffbeb;border:1px solid #fde68a;border-radius:9px;padding:9px 12px;margin-top:10px}
+
+  /* genel section */
+  section{padding:80px 0}
+  .baslik{text-align:center;max-width:680px;margin:0 auto 50px}
+  .baslik h2{font-size:clamp(26px,4vw,40px);letter-spacing:-.025em;font-weight:820}
+  .baslik p{color:var(--gri);margin-top:14px;font-size:17px}
+  .etiket{color:var(--acik);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
+
+  /* features */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:900px){.grid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:600px){.grid{grid-template-columns:1fr}}
+  .feat{background:var(--kart);border:1px solid var(--cizgi);border-radius:16px;padding:28px;transition:transform .2s,box-shadow .2s}
+  .feat:hover{transform:translateY(-6px);box-shadow:var(--golge)}
+  .feat .ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:linear-gradient(135deg,rgba(21,121,90,.12),rgba(34,197,94,.16));margin-bottom:16px}
+  .feat h3{font-size:18px;font-weight:750;margin-bottom:8px}
+  .feat p{font-size:14.5px;color:var(--gri)}
+
+  /* steps */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:s}
+  @media(max-width:760px){.steps{grid-template-columns:1fr}}
+  .step{position:relative;background:var(--kart);border:1px solid var(--cizgi);border-radius:16px;padding:30px 26px}
+  .step .no{counter-increment:s;width:42px;height:42px;border-radius:11px;background:linear-gradient(135deg,var(--yesil2),var(--acik));color:#fff;font-weight:850;display:grid;place-items:center;font-size:19px;margin-bottom:16px}
+  .step .no::before{content:counter(s)}
+  .step h3{font-size:18px;margin-bottom:8px}.step p{font-size:14.5px;color:var(--gri)}
+
+  /* stats */
+  .stats{background:linear-gradient(135deg,var(--yesil),#0e4d3a);border-radius:24px;padding:54px 30px;color:#fff;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
+  @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:34px 20px}}
+  .stats .n{font-size:clamp(30px,5vw,46px);font-weight:850;letter-spacing:-.03em;background:linear-gradient(120deg,#fff,var(--acik2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stats .l{font-size:14px;color:rgba(255,255,255,.75);margin-top:6px}
+
+  /* indir */
+  .indir{text-align:center;background:var(--kart);border:1px solid var(--cizgi);border-radius:24px;padding:60px 30px;box-shadow:var(--golge)}
+  .indir h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.02em}
+  .indir p{color:var(--gri);margin:14px auto 26px;max-width:520px}
+  .kurulum{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:36px;text-align:left}
+  @media(max-width:700px){.kurulum{grid-template-columns:1fr}}
+  .ku{background:#fbfdfc;border:1px solid var(--cizgi);border-radius:13px;padding:18px}
+  .ku b{display:block;margin-bottom:5px;font-size:14.5px}.ku span{font-size:13px;color:var(--gri)}
+
+  footer{padding:40px 0;border-top:1px solid var(--cizgi);color:var(--acikgri);font-size:13.5px;text-align:center}
+  .note{font-size:12.5px;color:var(--acikgri);margin-top:18px}
+
+  /* scroll reveal */
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .float{animation:float 5s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="logo"><span class="rx">℞</span> SGK Rapor Analiz</div>
+    <div class="navlinks">
+      <a href="#ozellikler">Özellikler</a>
+      <a href="#nasil">Nasıl Çalışır</a>
+      <a href="#guven">Veriler</a>
+      <a href="#indir">İndir</a>
+    </div>
+    <a href="#indir" class="btn">Ücretsiz İndir</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="rozet reveal"><span class="dot"></span> Güncel SUT verileriyle • KVKK uyumlu • Tamamen yerel</div>
+    <h1 class="reveal">Reçeteyi yükle, <span class="grad">SGK ödeme kararını</span> saniyede gör.</h1>
+    <p class="lead reveal">Eczacılar için akıllı reçete-rapor kontrol aracı. Hasta ödemez mi, %20 mi öder, yoksa reddedilir mi — yapay zeka okur, kural motoru SUT'a göre karar verir, kesinti riskini önceden uyarır.</p>
+    <div class="cta reveal">
+      <a href="#indir" class="btn">⬇ Windows için İndir</a>
+      <a href="#nasil" class="btn dark">Nasıl çalışır?</a>
+    </div>
+
+    <div class="mock reveal float">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="body">
+        <div class="panel">
+          <h4>Rapor Bilgileri (AI doldurdu)</h4>
+          <div class="row"><span>Hasta</span><b>A** Y**</b></div>
+          <div class="row"><span>Tanı</span><b>E78.0 Hiperkolesterolemi</b></div>
+          <div class="row"><span>İlaç</span><b>Atorvastatin 20mg</b></div>
+          <div class="row"><span>LDL</span><b>215 mg/dL</b></div>
+          <div class="row"><span>Branş</span><b>Kardiyoloji</b></div>
+        </div>
+        <div class="panel">
+          <h4>Ödeme Kararı</h4>
+          <div class="karar">
+            <div class="big ek4d">EK-4/D</div>
+            <div class="pill">Hasta %0 öder — SGK tamamını öder</div>
+          </div>
+          <div class="row" style="margin-top:10px"><span>Sebep</span><b>LDL 215 ≥ 190</b></div>
+          <div class="row"><span>Geçerlilik</span><b>24 ay</b></div>
+          <div class="uyari">⚠️ Kesinti riski kontrolleri otomatik tarandı — sorun yok.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="ozellikler">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Özellikler</div>
+      <h2>Eczacının işini bitiren araç</h2>
+      <p>Reçeteyi okumaktan ödeme kararına, kesinti uyarısından eşdeğer ilaca kadar her şey tek ekranda.</p>
+    </div>
+    <div class="grid">
+      <div class="feat reveal"><div class="ico">📷</div><h3>Fotoğraf & PDF Okuma</h3><p>Raporu fotoğrafla veya PDF olarak yükle; yapay zeka hasta, tanı, ilaç ve lab değerlerini otomatik çıkarır.</p></div>
+      <div class="feat reveal"><div class="ico">⚖️</div><h3>3 Katmanlı Ödeme Kararı</h3><p>İlaç ödenir mi → tanı muaf mı → %20 mi, uzman şartı mı? SUT kurallarıyla kesin sonuç.</p></div>
+      <div class="feat reveal"><div class="ico">🛡️</div><h3>Kesinti Riski Uyarıları</h3><p>Antibiyotik EHU onayı, yatarak-only ilaç, kırmızı reçete doz sınırı — kesintiden önce uyarır.</p></div>
+      <div class="feat reveal"><div class="ico">💊</div><h3>8.429 Güncel İlaç</h3><p>SGK EK-4/A listesi her gün otomatik güncellenir. mg'leriyle ara, eşdeğerini gör.</p></div>
+      <div class="feat reveal"><div class="ico">🔄</div><h3>Otomatik Güncelleme</h3><p>SUT değişince merkezi olarak güncellenir — her bilgisayara tek tek yükleme yok.</p></div>
+      <div class="feat reveal"><div class="ico">🔒</div><h3>KVKK & Tamamen Yerel</h3><p>Hasta verisi bilgisayardan çıkmaz, internete gönderilmez. Yapay zeka cihazında çalışır.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="nasil" style="background:#fff;border-block:1px solid var(--cizgi)">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Nasıl Çalışır</div>
+      <h2>Üç adımda sonuç</h2>
+    </div>
+    <div class="steps">
+      <div class="step reveal"><div class="no"></div><h3>Yükle</h3><p>Reçete/rapor fotoğrafını veya PDF'ini sürükle-bırak. Ya da manuel gir.</p></div>
+      <div class="step reveal"><div class="no"></div><h3>Analiz</h3><p>AI bilgileri çıkarır, kural motoru güncel SUT eşikleriyle değerlendirir.</p></div>
+      <div class="step reveal"><div class="no"></div><h3>Karar</h3><p>Ödeme durumu, gerekçesi, geçerlilik ve kesinti uyarıları anında ekranda.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="guven">
+  <div class="wrap reveal">
+    <div class="stats">
+      <div><div class="n">8.429</div><div class="l">Güncel ilaç (EK-4/A)</div></div>
+      <div><div class="n">635</div><div class="l">Muafiyet ICD kodu (EK-4/D)</div></div>
+      <div><div class="n">Günlük</div><div class="l">Otomatik veri güncelleme</div></div>
+      <div><div class="n">%100</div><div class="l">Yerel — veri cihazdan çıkmaz</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="indir">
+  <div class="wrap">
+    <div class="indir reveal">
+      <div class="etiket">İndir</div>
+      <h2>Windows için ücretsiz</h2>
+      <p>Tek dosya, kurulum gerektirmez. İndir, çift tıkla, kullanmaya başla.</p>
+      <a href="SGK-Rapor-Analiz-Setup-1.0.0.exe" class="btn" style="font-size:16px;padding:14px 30px">⬇ SGK Rapor Analiz Kurulum (.exe)</a>
+      <div class="kurulum">
+        <div class="ku"><b>1 · Kur & Çalıştır</b><span>Setup'ı çalıştır, "İleri" ile kur (masaüstü kısayolu oluşur). Windows "PC'nizi korudu" derse: Ek bilgi → Yine de çalıştır (imzasız uygulama, normaldir).</span></div>
+        <div class="ku"><b>2 · Yapay zekayı kur (tek tık)</b><span>Uygulamada Ayarlar → "Yapay Zeka Kurulumu": Ollama'yı indir + AI modelini indir butonları. Komut satırı yok. Manuel giriş AI olmadan da çalışır.</span></div>
+        <div class="ku"><b>3 · İnternet (ilk açılış)</b><span>İlk açılışta güncel ilaç/muafiyet verisini otomatik indirir. Sonrası offline çalışır.</span></div>
+      </div>
+      <p class="note">Bu araç bir karar-destek aracıdır; kesin ödeme provizyonu MEDULA üzerinden yapılır. SUT verileri düzenli güncellenir.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo" style="justify-content:center;margin-bottom:10px"><span class="rx">℞</span> SGK Rapor Analiz</div>
+    Eczacılar için akıllı reçete-rapor kontrol aracı • © 2026
+  </div>
+</footer>
+
+<script>
+  const io = new IntersectionObserver((es)=>{
+    es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%3*70)+'ms'; io.observe(el); });
+</script>
+</body>
+</html>
