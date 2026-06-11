@@ -159,6 +159,17 @@
   .reveal.in{opacity:1;transform:none}
   .float{animation:float 5s ease-in-out infinite}
   @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* canlı demo animasyonu */
+  .demo-rozet{margin-left:auto;display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;letter-spacing:.06em;color:#dc2626;text-transform:uppercase}
+  .demo-rozet i{width:8px;height:8px;border-radius:50%;background:#dc2626;animation:pulse 1.6s infinite}
+  .d-durum{display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--yesil2);font-weight:600;min-height:20px;margin-bottom:10px}
+  .yaniyor::after{content:"▌";color:var(--acik);animation:blink .9s steps(1) infinite;margin-left:1px}
+  @keyframes blink{50%{opacity:0}}
+  .sonuc{opacity:0;transform:scale(.95);transition:opacity .5s,transform .5s}
+  .sonuc.goster{opacity:1;transform:none}
+  .gizli-uyari{opacity:0;transform:translateY(8px);transition:opacity .5s,transform .5s}
+  .gizli-uyari.goster{opacity:1;transform:none}
 </style>
 </head>
 <body>
@@ -187,26 +198,29 @@
       <a href="#fiyat" class="btn dark">Fiyatı Gör — Sınırsız Kullanım</a>
     </div>
 
-    <div class="mock reveal float">
-      <div class="bar"><i></i><i></i><i></i></div>
+    <div class="mock reveal float" id="demo">
+      <div class="bar"><i></i><i></i><i></i><span class="demo-rozet"><i></i> Canlı Demo</span></div>
       <div class="body">
         <div class="panel">
           <h4>Rapor Bilgileri (AI doldurdu)</h4>
-          <div class="row"><span>Hasta</span><b>A** Y**</b></div>
-          <div class="row"><span>Tanı</span><b>E78.0 Hiperkolesterolemi</b></div>
-          <div class="row"><span>İlaç</span><b>Atorvastatin 20mg</b></div>
-          <div class="row"><span>LDL</span><b>215 mg/dL</b></div>
-          <div class="row"><span>Branş</span><b>Kardiyoloji</b></div>
+          <div class="d-durum" id="d-durum">📄 Reçete okunuyor…</div>
+          <div class="row"><span>Hasta</span><b id="d-hasta">A** Y**</b></div>
+          <div class="row"><span>Tanı</span><b id="d-tani">E78.0 Hiperkolesterolemi</b></div>
+          <div class="row"><span>İlaç</span><b id="d-ilac">Atorvastatin 20mg</b></div>
+          <div class="row"><span>LDL</span><b id="d-ldl">215 mg/dL</b></div>
+          <div class="row"><span>Branş</span><b id="d-brans">Kardiyoloji</b></div>
         </div>
         <div class="panel">
           <h4>Ödeme Kararı</h4>
-          <div class="karar">
-            <div class="big ek4d">EK-4/D</div>
-            <div class="pill">Hasta %0 öder — SGK tamamını öder</div>
+          <div class="sonuc goster" id="d-sonuc">
+            <div class="karar">
+              <div class="big ek4d">EK-4/D</div>
+              <div class="pill">Hasta %0 öder — SGK tamamını öder</div>
+            </div>
+            <div class="row" style="margin-top:10px"><span>Sebep</span><b>LDL 215 &gt; 190 (SUT 4.2.28.A)</b></div>
+            <div class="row"><span>Geçerlilik</span><b>24 ay</b></div>
           </div>
-          <div class="row" style="margin-top:10px"><span>Sebep</span><b>LDL 215 &gt; 190 (SUT 4.2.28.A)</b></div>
-          <div class="row"><span>Geçerlilik</span><b>24 ay</b></div>
-          <div class="uyari">⚠️ Kesinti riski kontrolleri otomatik tarandı — sorun yok.</div>
+          <div class="uyari gizli-uyari goster" id="d-uyari">✓ Kesinti riski kontrolleri otomatik tarandı — sorun yok.</div>
         </div>
       </div>
     </div>
@@ -427,6 +441,47 @@
     es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target);} });
   },{threshold:.12});
   document.querySelectorAll('.reveal').forEach((el,i)=>{ el.style.transitionDelay=(i%3*70)+'ms'; io.observe(el); });
+
+  /* ─── Canlı demo döngüsü (video yerine) ─── */
+  (function(){
+    const $ = (id)=>document.getElementById(id);
+    const alanlar = [
+      ['d-hasta','A** Y**'],
+      ['d-tani','E78.0 Hiperkolesterolemi'],
+      ['d-ilac','Atorvastatin 20mg'],
+      ['d-ldl','215 mg/dL'],
+      ['d-brans','Kardiyoloji'],
+    ];
+    const beklet = (ms)=>new Promise(r=>setTimeout(r,ms));
+    async function yaz(el, metin){
+      el.textContent=''; el.classList.add('yaniyor');
+      for (const ch of metin){ el.textContent += ch; await beklet(16+Math.random()*26); }
+      el.classList.remove('yaniyor');
+    }
+    // Sekme arka plandayken döngüyü duraklatmak için
+    const gorunur = ()=>!document.hidden;
+    async function demo(){
+      const durum=$('d-durum'), sonuc=$('d-sonuc'), uyari=$('d-uyari');
+      if(!durum||!sonuc||!uyari) return;
+      while(true){
+        if(!gorunur()){ await beklet(1200); continue; }
+        sonuc.classList.remove('goster'); uyari.classList.remove('goster');
+        alanlar.forEach(([id])=>{ $(id).textContent='—'; });
+        durum.textContent='📄 Reçete okunuyor…';
+        await beklet(1100);
+        durum.textContent='🤖 AI alanları dolduruyor…';
+        for (const [id, deger] of alanlar){ await yaz($(id), deger); await beklet(120); }
+        durum.textContent='⚖️ SUT kural motoru çalışıyor…';
+        await beklet(1200);
+        durum.textContent='✓ Analiz tamamlandı (0.2 sn)';
+        sonuc.classList.add('goster');
+        await beklet(800);
+        uyari.classList.add('goster');
+        await beklet(5200);
+      }
+    }
+    demo();
+  })();
 </script>
 </body>
 </html>
