@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Eczasist — Eczacılar için Akıllı Reçete Kontrol & Asistan</title>
-<meta name="description" content="Reçeteyi yükle, SGK ödeme kararını saniyede gör. Kesinti riskini önle. Güncel SUT verileriyle otomatik analiz." />
+<title>Eczasist — Eczacılar için Akıllı Reçete Kontrol & Kesinti Önleme</title>
+<meta name="description" content="Reçeteyi yükle, SGK ödeme kararını saniyede gör. Kesinti riskini önle. Hasta verisi bilgisayardan çıkmaz — KVKK riski mimari olarak yok. Ayda 4.499 TL, sınırsız kullanım." />
 <style>
   :root{
     --yesil:#0B3D2E; --yesil2:#15795a; --acik:#22c55e; --acik2:#4ade80;
@@ -22,12 +22,12 @@
   nav .wrap{display:flex;align-items:center;justify-content:space-between;height:68px}
   .logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:19px;letter-spacing:-.02em}
   .logo .rx{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--yesil2),var(--acik));display:grid;place-items:center;color:#fff;font-weight:900;box-shadow:0 4px 14px rgba(34,197,94,.35)}
-  .navlinks{display:flex;gap:28px;font-size:14.5px;font-weight:500;color:var(--gri)}
+  .navlinks{display:flex;gap:24px;font-size:14.5px;font-weight:500;color:var(--gri)}
   .navlinks a:hover{color:var(--yesil2)}
   .btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--yesil2),var(--acik));color:#fff;padding:11px 22px;border-radius:11px;font-weight:700;font-size:14.5px;box-shadow:0 6px 20px rgba(34,197,94,.30);transition:transform .15s,box-shadow .15s;border:none;cursor:pointer}
   .btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(34,197,94,.42)}
   .btn.dark{background:linear-gradient(135deg,#0B3D2E,#15795a)}
-  @media(max-width:760px){.navlinks{display:none}}
+  @media(max-width:860px){.navlinks{display:none}}
 
   /* HERO */
   .hero{position:relative;padding:90px 0 80px;overflow:hidden}
@@ -36,7 +36,7 @@
     radial-gradient(600px 400px at 0% 30%,rgba(21,121,90,.10),transparent 60%);z-index:-1}
   .hero h1{font-size:clamp(34px,5.5vw,60px);line-height:1.08;letter-spacing:-.03em;font-weight:850;max-width:780px}
   .hero h1 .grad{background:linear-gradient(120deg,var(--yesil2),var(--acik));-webkit-background-clip:text;background-clip:text;color:transparent}
-  .hero p.lead{font-size:clamp(16px,2.2vw,20px);color:var(--gri);max-width:620px;margin:22px 0 32px}
+  .hero p.lead{font-size:clamp(16px,2.2vw,20px);color:var(--gri);max-width:640px;margin:22px 0 32px}
   .hero .cta{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
   .rozet{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--cizgi);color:var(--yesil2);padding:7px 15px;border-radius:999px;font-size:13px;font-weight:600;margin-bottom:22px;box-shadow:var(--golge)}
   .dot{width:8px;height:8px;border-radius:50%;background:var(--acik);box-shadow:0 0 0 4px rgba(34,197,94,.2);animation:pulse 2s infinite}
@@ -61,7 +61,7 @@
 
   /* genel section */
   section{padding:80px 0}
-  .baslik{text-align:center;max-width:680px;margin:0 auto 50px}
+  .baslik{text-align:center;max-width:720px;margin:0 auto 50px}
   .baslik h2{font-size:clamp(26px,4vw,40px);letter-spacing:-.025em;font-weight:820}
   .baslik p{color:var(--gri);margin-top:14px;font-size:17px}
   .etiket{color:var(--acik);font-weight:700;font-size:13px;letter-spacing:.08em;text-transform:uppercase}
@@ -76,6 +76,15 @@
   .feat h3{font-size:18px;font-weight:750;margin-bottom:8px}
   .feat p{font-size:14.5px;color:var(--gri)}
 
+  /* vaka kartları */
+  .vakalar{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  @media(max-width:860px){.vakalar{grid-template-columns:1fr}}
+  .vaka{background:var(--kart);border:1px solid #fecaca;border-left:5px solid #ef4444;border-radius:16px;padding:26px}
+  .vaka .tutar{font-size:30px;font-weight:850;color:#dc2626;letter-spacing:-.02em}
+  .vaka h3{font-size:16px;margin:8px 0 6px}
+  .vaka p{font-size:14px;color:var(--gri)}
+  .vaka .cozum{margin-top:12px;font-size:13px;color:#15795a;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);border-radius:9px;padding:8px 12px}
+
   /* steps */
   .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:s}
   @media(max-width:760px){.steps{grid-template-columns:1fr}}
@@ -84,11 +93,54 @@
   .step .no::before{content:counter(s)}
   .step h3{font-size:18px;margin-bottom:8px}.step p{font-size:14.5px;color:var(--gri)}
 
+  /* KVKK */
+  .kvkk-ust{display:grid;grid-template-columns:1fr 1fr;gap:34px;align-items:start;margin-bottom:44px}
+  @media(max-width:860px){.kvkk-ust{grid-template-columns:1fr}}
+  .kvkk-metin h3{font-size:22px;letter-spacing:-.02em;margin-bottom:12px}
+  .kvkk-metin p{font-size:15px;color:var(--gri);margin-bottom:14px}
+  .kvkk-metin p b{color:var(--yesil)}
+  .guvence{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  @media(max-width:520px){.guvence{grid-template-columns:1fr}}
+  .gu{background:var(--kart);border:1px solid var(--cizgi);border-radius:13px;padding:18px}
+  .gu .ico{font-size:22px;margin-bottom:8px}
+  .gu b{display:block;font-size:14.5px;margin-bottom:4px}
+  .gu span{font-size:13px;color:var(--gri)}
+  table.kiyas{width:100%;border-collapse:separate;border-spacing:0;background:var(--kart);border:1px solid var(--cizgi);border-radius:16px;overflow:hidden;box-shadow:var(--golge);font-size:14px}
+  .kiyas th,.kiyas td{padding:14px 16px;text-align:left;border-bottom:1px solid var(--cizgi);vertical-align:top}
+  .kiyas tr:last-child td{border-bottom:none}
+  .kiyas thead th{background:#fbfdfc;font-size:13px;text-transform:uppercase;letter-spacing:.03em;color:var(--acikgri)}
+  .kiyas td.ec{background:rgba(34,197,94,.06);font-weight:600}
+  .kiyas td:first-child{color:var(--gri);font-weight:600;width:26%}
+  .kiyas .x{color:#dc2626}.kiyas .v{color:#15795a}
+  @media(max-width:680px){.kiyas{font-size:12.5px}.kiyas th,.kiyas td{padding:10px 10px}}
+
   /* stats */
   .stats{background:linear-gradient(135deg,var(--yesil),#0e4d3a);border-radius:24px;padding:54px 30px;color:#fff;display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center}
   @media(max-width:760px){.stats{grid-template-columns:repeat(2,1fr);gap:34px 20px}}
   .stats .n{font-size:clamp(30px,5vw,46px);font-weight:850;letter-spacing:-.03em;background:linear-gradient(120deg,#fff,var(--acik2));-webkit-background-clip:text;background-clip:text;color:transparent}
   .stats .l{font-size:14px;color:rgba(255,255,255,.75);margin-top:6px}
+
+  /* fiyat */
+  .fiyat-kart{max-width:560px;margin:0 auto;background:var(--kart);border:2px solid var(--acik);border-radius:24px;padding:44px 38px;box-shadow:0 20px 60px rgba(34,197,94,.18);text-align:center;position:relative}
+  .fiyat-kart .ust-rozet{position:absolute;top:-15px;left:50%;transform:translateX(-50%);background:linear-gradient(135deg,var(--yesil2),var(--acik));color:#fff;font-weight:800;font-size:12.5px;letter-spacing:.05em;padding:7px 18px;border-radius:999px;text-transform:uppercase}
+  .fiyat-kart .tutar{font-size:clamp(44px,7vw,64px);font-weight:850;letter-spacing:-.03em;margin:18px 0 2px}
+  .fiyat-kart .tutar small{font-size:22px;font-weight:700;color:var(--gri)}
+  .fiyat-kart .alt{color:var(--gri);font-size:15px;margin-bottom:26px}
+  .dahil{text-align:left;margin:0 auto 28px;max-width:420px}
+  .dahil li{list-style:none;padding:9px 0 9px 30px;position:relative;font-size:14.5px;border-bottom:1px dashed var(--cizgi)}
+  .dahil li:last-child{border-bottom:none}
+  .dahil li::before{content:"✓";position:absolute;left:0;top:8px;width:21px;height:21px;border-radius:7px;background:rgba(34,197,94,.14);color:#15795a;font-weight:800;font-size:13px;display:grid;place-items:center}
+  .fiyat-not{font-size:13px;color:var(--acikgri);margin-top:16px}
+  .abonelik-yok{display:inline-flex;align-items:center;gap:8px;background:rgba(34,197,94,.10);border:1px solid rgba(34,197,94,.35);color:#15795a;font-weight:700;font-size:13px;padding:7px 16px;border-radius:999px;margin-top:6px}
+
+  /* SSS */
+  .sss{max-width:760px;margin:0 auto}
+  .sss details{background:var(--kart);border:1px solid var(--cizgi);border-radius:14px;margin-bottom:12px;overflow:hidden}
+  .sss summary{cursor:pointer;padding:18px 22px;font-weight:700;font-size:15.5px;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:14px}
+  .sss summary::-webkit-details-marker{display:none}
+  .sss summary::after{content:"+";font-size:22px;color:var(--acik);font-weight:600;transition:transform .2s}
+  .sss details[open] summary::after{transform:rotate(45deg)}
+  .sss .icerik{padding:0 22px 18px;font-size:14.5px;color:var(--gri)}
 
   /* indir */
   .indir{text-align:center;background:var(--kart);border:1px solid var(--cizgi);border-radius:24px;padding:60px 30px;box-shadow:var(--golge)}
@@ -116,22 +168,23 @@
     <div class="logo"><span class="rx">℞</span> Eczasist</div>
     <div class="navlinks">
       <a href="#ozellikler">Özellikler</a>
-      <a href="#nasil">Nasıl Çalışır</a>
-      <a href="#guven">Veriler</a>
-      <a href="#indir">İndir</a>
+      <a href="#vakalar">Kesinti Vakaları</a>
+      <a href="#kvkk">KVKK</a>
+      <a href="#fiyat">Fiyat</a>
+      <a href="#sss">SSS</a>
     </div>
-    <a href="#indir" class="btn">Ücretsiz İndir</a>
+    <a href="#indir" class="btn">İndir</a>
   </div>
 </nav>
 
 <header class="hero">
   <div class="wrap">
-    <div class="rozet reveal"><span class="dot"></span> Güncel SUT verileriyle • KVKK uyumlu • Tamamen yerel</div>
+    <div class="rozet reveal"><span class="dot"></span> Hasta verisi bilgisayardan çıkmaz • Sınırsız kullanım • Sabit aylık fiyat</div>
     <h1 class="reveal">Reçeteyi yükle, <span class="grad">SGK ödeme kararını</span> saniyede gör.</h1>
-    <p class="lead reveal">Eczacılar için akıllı reçete-rapor kontrol aracı. Hasta ne kadar öder, SGK kesintisi olur mu? — Yapay zeka okur, kural motoru SUT'a göre karar verir, kesinti riskini önceden uyarır.</p>
+    <p class="lead reveal">Eczacılar için akıllı reçete-rapor kontrol ve kesinti önleme aracı. Hasta ne kadar öder, SGK kesintisi olur mu? — Yapay zeka okur, kural motoru güncel SUT'a göre karar verir, gerçek saha vakalarından beslenen kesinti kütüphanesi sizi önceden uyarır.</p>
     <div class="cta reveal">
       <a href="#indir" class="btn">⬇ Windows için İndir</a>
-      <a href="#nasil" class="btn dark">Nasıl çalışır?</a>
+      <a href="#fiyat" class="btn dark">Fiyatı Gör — Sınırsız Kullanım</a>
     </div>
 
     <div class="mock reveal float">
@@ -151,7 +204,7 @@
             <div class="big ek4d">EK-4/D</div>
             <div class="pill">Hasta %0 öder — SGK tamamını öder</div>
           </div>
-          <div class="row" style="margin-top:10px"><span>Sebep</span><b>LDL 215 ≥ 190</b></div>
+          <div class="row" style="margin-top:10px"><span>Sebep</span><b>LDL 215 &gt; 190 (SUT 4.2.28.A)</b></div>
           <div class="row"><span>Geçerlilik</span><b>24 ay</b></div>
           <div class="uyari">⚠️ Kesinti riski kontrolleri otomatik tarandı — sorun yok.</div>
         </div>
@@ -165,20 +218,53 @@
     <div class="baslik reveal">
       <div class="etiket">Özellikler</div>
       <h2>Eczacının işini bitiren araç</h2>
-      <p>Reçeteyi okumaktan ödeme kararına, kesinti uyarısından eşdeğer ilaca kadar her şey tek ekranda.</p>
+      <p>Reçeteyi okumaktan ödeme kararına, kesinti uyarısından yapay zeka asistanına kadar her şey tek ekranda — hepsi kendi bilgisayarınızda.</p>
     </div>
     <div class="grid">
       <div class="feat reveal"><div class="ico">📷</div><h3>Fotoğraf & PDF Okuma</h3><p>Raporu fotoğrafla veya PDF olarak yükle; yapay zeka hasta, tanı, ilaç ve lab değerlerini otomatik çıkarır.</p></div>
-      <div class="feat reveal"><div class="ico">⚖️</div><h3>3 Katmanlı Ödeme Kararı</h3><p>İlaç ödenir mi → tanı muaf mı → %20 mi, uzman şartı mı? SUT kurallarıyla kesin sonuç.</p></div>
-      <div class="feat reveal"><div class="ico">🛡️</div><h3>Kesinti Riski Uyarıları</h3><p>Antibiyotik EHU onayı, yatarak-only ilaç, kırmızı reçete doz sınırı — kesintiden önce uyarır.</p></div>
+      <div class="feat reveal"><div class="ico">⚖️</div><h3>SUT Kural Motoru</h3><p>İlaç ödenir mi → tanı muaf mı → %20 mi, uzman şartı mı? Deterministik kural motoru: aynı rapora her zaman aynı, SUT maddesine dayalı karar.</p></div>
+      <div class="feat reveal"><div class="ico">🛡️</div><h3>Kesinti Kütüphanesi</h3><p>Gerçek saha vakalarından derlenen, resmi kaynakla tek tek doğrulanan kesinti kuralları. Doğrulanmamış kural size asla gösterilmez.</p></div>
+      <div class="feat reveal"><div class="ico">💰</div><h3>Yüksek Bedelli Koruması</h3><p>Keytruda, Spinraza gibi on binlerce TL'lik ilaçlarda kritik SUT şartını tam ekran uyarıyla hatırlatır — tek eksik şart dev kesinti demektir.</p></div>
+      <div class="feat reveal"><div class="ico">🤖</div><h3>Eczane Asistanı</h3><p>Sorunuzu yazın: asistan önce uygulamanın doğrulanmış kural tabanına bakar, sonra internette arar ve iki kaynağı karşılaştırarak cevaplar.</p></div>
       <div class="feat reveal"><div class="ico">💊</div><h3>8.429 Güncel İlaç</h3><p>SGK EK-4/A listesi her gün otomatik güncellenir. mg'leriyle ara, eşdeğerini gör.</p></div>
-      <div class="feat reveal"><div class="ico">🔄</div><h3>Otomatik Güncelleme</h3><p>SUT değişince merkezi olarak güncellenir — her bilgisayara tek tek yükleme yok.</p></div>
-      <div class="feat reveal"><div class="ico">🔒</div><h3>KVKK & Tamamen Yerel</h3><p>Hasta verisi bilgisayardan çıkmaz, internete gönderilmez. Yapay zeka cihazında çalışır.</p></div>
+      <div class="feat reveal"><div class="ico">🔄</div><h3>Otomatik Güncelleme</h3><p>SUT ve ilaç listeleri değişince merkezi olarak güncellenir — her bilgisayara tek tek yükleme yok.</p></div>
+      <div class="feat reveal"><div class="ico">🔒</div><h3>KVKK & Tamamen Yerel</h3><p>Hasta verisi bilgisayardan çıkmaz, hiçbir sunucuya gönderilmez. Yapay zeka cihazınızda çalışır.</p></div>
+      <div class="feat reveal"><div class="ico">📡</div><h3>MEDULA Entegrasyonu</h3><p>Barkod okut, reçete bilgisi MEDULA'dan gelsin, form otomatik dolsun. (Yakında — eczane testi aşamasında.)</p></div>
     </div>
   </div>
 </section>
 
-<section id="nasil" style="background:#fff;border-block:1px solid var(--cizgi)">
+<section id="vakalar" style="background:#fff;border-block:1px solid var(--cizgi)">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Gerçek Kesinti Vakaları</div>
+      <h2>Bir kesinti, yazılımın fiyatının 10 katı</h2>
+      <p>Aşağıdakiler eczacıların sahada gerçekten yaşadığı kesintiler. Eczasist'in kural kütüphanesi tam da bunları yakalamak için var.</p>
+    </div>
+    <div class="vakalar">
+      <div class="vaka reveal">
+        <div class="tutar">~45.000 ₺</div>
+        <h3>Heparin + hemodiyaliz</h3>
+        <p>Hemodiyaliz hastasına düşük molekül ağırlıklı heparin, diyalize girdiği günler dahil yazıldı. SGK diyaliz günlerine denk gelen kutuların tamamını kesti.</p>
+        <div class="cozum">✓ Eczasist bu reçetede diyaliz günü uyarısını otomatik gösterir.</div>
+      </div>
+      <div class="vaka reveal">
+        <div class="tutar">~23.000 ₺</div>
+        <h3>Enteral beslenme — çoklu aroma</h3>
+        <p>Rapor 2x1 dozda iken iki aromadan 2x1 + 2x1 verildi; toplam doz rapor dozunu aştığı için kesinti yapıldı (SUT 4.2.8.A).</p>
+        <div class="cozum">✓ Eczasist toplam doz/kalori uyarısını mama reçetelerinde otomatik verir.</div>
+      </div>
+      <div class="vaka reveal">
+        <div class="tutar">Tüm reçeteler</div>
+        <h3>Xolair — ara verme şartı</h3>
+        <p>"Ara verme sonrası nüks" gerekçeli rapor, hasta gerçekte ara vermeden çıkarıldı. Rapor geçersiz sayıldı, o raporla verilen tüm reçetelerde kesinti yapıldı.</p>
+        <div class="cozum">✓ Eczasist ilaç geçmişinden ara dönem kontrolünü hatırlatır.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="nasil">
   <div class="wrap">
     <div class="baslik reveal">
       <div class="etiket">Nasıl Çalışır</div>
@@ -189,6 +275,48 @@
       <div class="step reveal"><div class="no"></div><h3>Analiz</h3><p>AI bilgileri çıkarır, kural motoru güncel SUT eşikleriyle değerlendirir.</p></div>
       <div class="step reveal"><div class="no"></div><h3>Karar</h3><p>Ödeme durumu, gerekçesi, geçerlilik ve kesinti uyarıları anında ekranda.</p></div>
     </div>
+  </div>
+</section>
+
+<section id="kvkk" style="background:#fff;border-block:1px solid var(--cizgi)">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Veri Güvenliği & KVKK</div>
+      <h2>KVKK'yı "uyumla" değil, mimariyle çözüyoruz</h2>
+      <p>Reçete ve rapor, sağlık verisi içerir — KVKK'da bu, <b>özel nitelikli kişisel veri</b>dir (Madde 6) ve en sıkı korumaya tabidir.</p>
+    </div>
+
+    <div class="kvkk-ust">
+      <div class="kvkk-metin reveal">
+        <h3>Neden KVKK riski taşımıyoruz?</h3>
+        <p><b>Çünkü hasta verisi bize hiç ulaşmıyor.</b> Bulut tabanlı sistemlerde reçete fotoğrafı ve hasta bilgisi firmanın sunucusuna yüklenir: orada işlenir, orada saklanır. Bu, sağlık verisinin üçüncü tarafa <b>aktarılması</b> demektir — açık rıza yükü, aydınlatma yükümlülüğü ve sızıntı riski eczacının üzerindedir.</p>
+        <p>Eczasist'te bu sorun <b>çözülmez — ortadan kalkar.</b> Yapay zeka (Ollama) ve SUT kural motoru eczanedeki bilgisayarda çalışır. Reçete fotoğrafı, hastanın adı, TC'si, tanısı, lab değeri: <b>hiçbiri internete gönderilmez.</b> Bizim hasta verisi tutan bir sunucumuz yok; sızdırılacak veri havuzu hiç oluşmuyor.</p>
+        <p>İnternete giden yalnızca iki şey vardır: uygulamanın SGK kaynaklı güncel ilaç/muafiyet listelerini <b>indirmesi</b> (aşağı yönlü veri) ve Asistan'a soru sorduğunuzda yapılan anahtar kelime araması — bu aramadan TC benzeri numaralar otomatik temizlenir, hasta verisi asla gönderilmez.</p>
+      </div>
+      <div class="guvence reveal">
+        <div class="gu"><div class="ico">🖥️</div><b>AI cihazda çalışır</b><span>Yapay zeka modeli eczane bilgisayarına kurulur. Reçete görüntüsü hiçbir sunucuya yüklenmez.</span></div>
+        <div class="gu"><div class="ico">🚫</div><b>Sunucumuz yok</b><span>Hasta verisi tutan bulut altyapımız yok. Olmayan sunucu sızdırılamaz, hack'lenemez.</span></div>
+        <div class="gu"><div class="ico">📴</div><b>Offline çalışır</b><span>Analiz internet olmadan da çalışır. İnternet yalnızca güncel liste indirmek için gerekir.</span></div>
+        <div class="gu"><div class="ico">🔐</div><b>Şifreler cihazda şifreli</b><span>MEDULA gibi hassas bilgiler Windows'un kendi şifreleme altyapısıyla yalnızca o bilgisayarda saklanır.</span></div>
+      </div>
+    </div>
+
+    <div class="reveal" style="overflow-x:auto">
+      <table class="kiyas">
+        <thead>
+          <tr><th></th><th>Bulut tabanlı sistemler</th><th>Eczasist</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Hasta verisi nereye gider?</td><td class="x">Firmanın sunucusuna yüklenir</td><td class="ec v">Hiçbir yere — bilgisayarda kalır</td></tr>
+          <tr><td>Yapay zeka nerede çalışır?</td><td class="x">Uzak sunucuda</td><td class="ec v">Eczanedeki bilgisayarda</td></tr>
+          <tr><td>Veri sızıntısı riski</td><td class="x">Tek sunucu saldırısı tüm eczaneleri etkiler</td><td class="ec v">Veri havuzu yok — mimari olarak imkânsız</td></tr>
+          <tr><td>Sağlık verisi aktarımı (KVKK m.6)</td><td class="x">Üçüncü tarafa aktarım var → rıza/aydınlatma yükü</td><td class="ec v">Aktarım yok</td></tr>
+          <tr><td>İnternet kesilirse</td><td class="x">Sistem durur</td><td class="ec v">Analiz çalışmaya devam eder</td></tr>
+          <tr><td>Kullanım maliyeti</td><td class="x">Paket/kota sınırlı, kullandıkça artar</td><td class="ec v">Sabit 4.499 ₺/ay — kota yok, sınırsız</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="note reveal" style="text-align:center">Eczasist hukuki danışmanlık vermez; eczanenin genel KVKK süreçleri kendi sorumluluğundadır. Eczasist'in katkısı, sağlık verisini cihaz dışına çıkarmayan mimarisiyle aktarım kaynaklı riskleri baştan ortadan kaldırmasıdır.</p>
   </div>
 </section>
 
@@ -203,15 +331,82 @@
   </div>
 </section>
 
+<section id="fiyat">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Fiyatlandırma</div>
+      <h2>Tek paket, sınırsız kullanım</h2>
+      <p>Sabit aylık fiyat — kullanım kotası yok, sorgu başına ücret yok. Yapay zeka kendi bilgisayarınızda çalıştığı için kullandıkça artan maliyet oluşmaz; günde 5 analiz de yapsanız 500 de, fiyat aynıdır.</p>
+    </div>
+    <div class="fiyat-kart reveal">
+      <div class="ust-rozet">Tek Paket — Sınırsız Kullanım</div>
+      <div class="tutar">4.499 <small>₺/ay</small></div>
+      <div class="alt">Aylık sabit fiyat · Eczane başına 1 lisans · İstediğiniz zaman iptal</div>
+      <ul class="dahil">
+        <li><b>Sınırsız</b> reçete &amp; rapor analizi — günde 5 de olur, 500 de</li>
+        <li><b>Sınırsız</b> yapay zeka kullanımı (cihazınızda çalışır, kota yok)</li>
+        <li>SUT kural motoru + kesinti riski uyarıları</li>
+        <li>Yüksek bedelli ilaç koruması</li>
+        <li>Eczane Asistanı (kural tabanı + internet karşılaştırmalı)</li>
+        <li>Günlük EK-4/A ilaç &amp; EK-4/D muafiyet güncellemeleri</li>
+        <li>SUT değişikliği ve kesinti kütüphanesi güncellemeleri</li>
+        <li>MEDULA entegrasyonu (yayınlandığında dahil)</li>
+      </ul>
+      <a href="#indir" class="btn" style="font-size:16px;padding:14px 34px">Hemen Başla</a>
+      <div style="margin-top:14px"><span class="abonelik-yok">✓ Kullandıkça artan ücret yok — analiz sayısı ne olursa olsun fiyat sabit</span></div>
+      <p class="fiyat-not">Sahadaki tek bir kesinti vakası (örn. ~45.000 ₺) aylık ücretin 10 katı — yazılım kendini ilk yakaladığı kesintide amorti eder.</p>
+    </div>
+  </div>
+</section>
+
+<section id="sss" style="background:#fff;border-block:1px solid var(--cizgi)">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">SSS</div>
+      <h2>Sık sorulan sorular</h2>
+    </div>
+    <div class="sss reveal">
+      <details>
+        <summary>Yapay zeka kullanımı gerçekten sınırsız mı? Nasıl olabiliyor?</summary>
+        <div class="icerik">Evet, gerçekten sınırsız. Eczasist'in yapay zekası (Ollama) açık kaynaklıdır ve <b>sizin bilgisayarınızda</b> çalışır — bulut API'si kullanmaz. Sorgu başına ya da aylık hiçbir maliyet oluşmadığı için kota koymamıza gerek yok. Tek sınır bilgisayarınızın gücüdür; analiz ne kadar çok yapılırsa yapılsın ek ücret yoktur.</div>
+      </details>
+      <details>
+        <summary>Hasta verileri nereye gidiyor?</summary>
+        <div class="icerik">Hiçbir yere. Reçete fotoğrafı, hasta adı, TC, tanı ve lab değerleri bilgisayarınızda işlenir ve bilgisayarınızda kalır. Bizim hasta verisi tutan bir sunucumuz yoktur. İnternete giden tek şey, uygulamanın güncel ilaç listelerini <i>indirmesi</i> ve Asistan'ın (hasta verisi içermeyen) anahtar kelime aramalarıdır.</div>
+      </details>
+      <details>
+        <summary>KVKK'ya nasıl uyumlu oluyorsunuz?</summary>
+        <div class="icerik">Sağlık verisi KVKK Madde 6 kapsamında özel nitelikli kişisel veridir. Bulut sistemlerde bu veri üçüncü taraf sunucuya aktarılır ve uyum yükü doğar. Eczasist'te veri <b>hiç aktarılmadığı</b> için aktarım kaynaklı riskler (açık rıza yükü, sızıntı, yurt dışı aktarım) mimari olarak ortadan kalkar. Detaylar için yukarıdaki <a href="#kvkk" style="color:var(--yesil2);font-weight:700">KVKK bölümüne</a> bakın.</div>
+      </details>
+      <details>
+        <summary>İnternet bağlantısı gerekiyor mu?</summary>
+        <div class="icerik">Analiz tamamen çevrimdışı çalışır. İnternet yalnızca üç şey için kullanılır: ilk kurulum, günlük ilaç/muafiyet listesi güncellemeleri ve Eczane Asistanı'nın isteğe bağlı web araması. İnternet kesilse bile reçete analiziniz durmaz.</div>
+      </details>
+      <details>
+        <summary>Sonuçlar kesin mi? Kesinti garantisi veriyor musunuz?</summary>
+        <div class="icerik">Eczasist bir <b>karar-destek</b> aracıdır; kesin provizyon MEDULA üzerinden yapılır. Gücümüz şeffaflıktan gelir: her karar SUT maddesine dayanır ve gerekçesiyle gösterilir. Kesinti kütüphanesindeki her kural ya resmi kaynakla (SUT metni, eczacı odası duyurusu) teyit edilmiştir ya da gösterilmez — doğrulanmamış kural size asla sunulmaz.</div>
+      </details>
+      <details>
+        <summary>Windows "PC'nizi korudu" uyarısı veriyor, güvenli mi?</summary>
+        <div class="icerik">Evet. Uygulama henüz ücretli kod imzası sertifikası içermediği için Windows SmartScreen bu uyarıyı tüm imzasız uygulamalarda gösterir. "Ek bilgi → Yine de çalıştır" ile kurabilirsiniz.</div>
+      </details>
+      <details>
+        <summary>Hangi bilgisayar gerekir?</summary>
+        <div class="icerik">Windows 10/11 (64-bit). Yapay zeka özellikleri için 8 GB+ RAM önerilir. Fotoğraf okuma ve AI olmadan, manuel form girişiyle de tüm SUT analizi çalışır — yani eski bilgisayarda bile kural motoru tam hizmet verir.</div>
+      </details>
+    </div>
+  </div>
+</section>
+
 <section id="indir">
   <div class="wrap">
     <div class="indir reveal">
       <div class="etiket">İndir</div>
-      <h2>Windows için ücretsiz</h2>
-      <p>Tek dosya, kurulum gerektirmez. İndir, çift tıkla, kullanmaya başla.</p>
+      <h2>Windows için indir</h2>
+      <p>Kur, çalıştır, kullanmaya başla. Yapay zeka kurulumu uygulama içinden tek tıkla yapılır.</p>
       <a href="https://github.com/berkyildizdas/sgk-site/releases/download/v2.0.0/Eczasist-Setup-2.0.0.exe" class="btn" style="font-size:16px;padding:14px 30px">⬇ Eczasist Kurulum (.exe)</a>
       <div class="kurulum">
-        <div class="ku"><b>1 · Kur & Çalıştır</b><span>Setup'ı çalıştır, "İleri" ile kur (masaüstü kısayolu oluşur). Windows "PC'nizi korudu" derse: Ek bilgi → Yine de çalıştır (imzasız uygulama, normaldir).</span></div>
+        <div class="ku"><b>1 · Kur &amp; Çalıştır</b><span>Setup'ı çalıştır, "İleri" ile kur (masaüstü kısayolu oluşur). Windows "PC'nizi korudu" derse: Ek bilgi → Yine de çalıştır (imzasız uygulama, normaldir).</span></div>
         <div class="ku"><b>2 · Yapay zekayı kur (tek tık)</b><span>Uygulamada Ayarlar → "Yapay Zeka Kurulumu": Ollama'yı indir + AI modelini indir butonları. Komut satırı yok. Manuel giriş AI olmadan da çalışır.</span></div>
         <div class="ku"><b>3 · İnternet (ilk açılış)</b><span>İlk açılışta güncel ilaç/muafiyet verisini otomatik indirir. Sonrası offline çalışır.</span></div>
       </div>
@@ -223,7 +418,7 @@
 <footer>
   <div class="wrap">
     <div class="logo" style="justify-content:center;margin-bottom:10px"><span class="rx">℞</span> Eczasist</div>
-    Eczacılar için akıllı reçete-rapor kontrol aracı • © 2026
+    Eczacılar için akıllı reçete-rapor kontrol aracı • Hasta verisi cihazdan çıkmaz • © 2026
   </div>
 </footer>
 
