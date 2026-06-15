@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Eczasist — Eczacılar için Akıllı Reçete Kontrol & Kesinti Önleme</title>
-<meta name="description" content="Reçeteyi yükle, SGK ödeme kararını saniyede gör. Kesinti riskini önle. Hasta verisi bilgisayardan çıkmaz — KVKK riski mimari olarak yok. Ayda 4.499 TL, sınırsız kullanım." />
+<meta name="description" content="Reçeteyi yükle, SGK ödeme kararını saniyede gör. Kesinti riskini önle. Hasta verisi bilgisayardan çıkmaz — KVKK riski mimari olarak yok. Ayda 3.499 TL, sınırsız kullanım." />
 <style>
   :root{
     --yesil:#0B3D2E; --yesil2:#15795a; --acik:#22c55e; --acik2:#4ade80;
@@ -326,7 +326,7 @@
           <tr><td>Veri sızıntısı riski</td><td class="x">Tek sunucu saldırısı tüm eczaneleri etkiler</td><td class="ec v">Veri havuzu yok — mimari olarak imkânsız</td></tr>
           <tr><td>Sağlık verisi aktarımı (KVKK m.6)</td><td class="x">Üçüncü tarafa aktarım var → rıza/aydınlatma yükü</td><td class="ec v">Aktarım yok</td></tr>
           <tr><td>İnternet kesilirse</td><td class="x">Sistem durur</td><td class="ec v">Analiz çalışmaya devam eder</td></tr>
-          <tr><td>Kullanım maliyeti</td><td class="x">Paket/kota sınırlı, kullandıkça artar</td><td class="ec v">Sabit 4.499 ₺/ay — kota yok, sınırsız</td></tr>
+          <tr><td>Kullanım maliyeti</td><td class="x">Paket/kota sınırlı, kullandıkça artar</td><td class="ec v">Sabit 3.499 ₺/ay — kota yok, sınırsız</td></tr>
         </tbody>
       </table>
     </div>
@@ -350,15 +350,15 @@
     <div class="baslik reveal">
       <div class="etiket">Fiyatlandırma</div>
       <h2>Tek paket, sınırsız kullanım</h2>
-      <p>Sabit aylık fiyat — kullanım kotası yok, sorgu başına ücret yok. Yapay zeka kendi bilgisayarınızda çalıştığı için kullandıkça artan maliyet oluşmaz; günde 5 analiz de yapsanız 500 de, fiyat aynıdır.</p>
+      <p>Sabit aylık fiyat — kullanım kotası yok, sorgu başına ücret yok. Günde 5 analiz de yapsanız 500 de, fiyat aynıdır.</p>
     </div>
     <div class="fiyat-kart reveal">
       <div class="ust-rozet">Tek Paket — Sınırsız Kullanım</div>
-      <div class="tutar">4.499 <small>₺/ay</small></div>
+      <div class="tutar">3.499 <small>₺/ay</small></div>
       <div class="alt">Aylık sabit fiyat · Eczane başına 1 lisans · İstediğiniz zaman iptal</div>
       <ul class="dahil">
         <li><b>Sınırsız</b> reçete &amp; rapor analizi — günde 5 de olur, 500 de</li>
-        <li><b>Sınırsız</b> yapay zeka kullanımı (cihazınızda çalışır, kota yok)</li>
+        <li>Yapay zeka ile otomatik reçete &amp; rapor okuma</li>
         <li>SUT kural motoru + kesinti riski uyarıları</li>
         <li>Yüksek bedelli ilaç koruması</li>
         <li>Eczane Asistanı (kural tabanı + internet karşılaştırmalı)</li>
@@ -380,10 +380,6 @@
       <h2>Sık sorulan sorular</h2>
     </div>
     <div class="sss reveal">
-      <details>
-        <summary>Yapay zeka kullanımı gerçekten sınırsız mı? Nasıl olabiliyor?</summary>
-        <div class="icerik">Evet, gerçekten sınırsız. Eczasist'in yapay zekası (Ollama) açık kaynaklıdır ve <b>sizin bilgisayarınızda</b> çalışır — bulut API'si kullanmaz. Sorgu başına ya da aylık hiçbir maliyet oluşmadığı için kota koymamıza gerek yok. Tek sınır bilgisayarınızın gücüdür; analiz ne kadar çok yapılırsa yapılsın ek ücret yoktur.</div>
-      </details>
       <details>
         <summary>Hasta verileri nereye gidiyor?</summary>
         <div class="icerik">Hiçbir yere. Reçete fotoğrafı, hasta adı, TC, tanı ve lab değerleri bilgisayarınızda işlenir ve bilgisayarınızda kalır. Bizim hasta verisi tutan bir sunucumuz yoktur. İnternete giden tek şey, uygulamanın güncel ilaç listelerini <i>indirmesi</i> ve Asistan'ın (hasta verisi içermeyen) anahtar kelime aramalarıdır.</div>
@@ -420,9 +416,10 @@
       <p>Kur, çalıştır, kullanmaya başla. Yapay zeka kurulumu uygulama içinden tek tıkla yapılır.</p>
       <a href="https://github.com/berkyildizdas/sgk-site/releases/download/v2.3.1/Eczasist-Setup-2.3.1.exe" class="btn" style="font-size:16px;padding:14px 30px">⬇ Eczasist Kurulum v2.3.1 (.exe)</a>
       <div class="kurulum">
-        <div class="ku"><b>1 · Kur &amp; Çalıştır</b><span>Setup'ı çalıştır, "İleri" ile kur (masaüstü kısayolu oluşur). Windows "PC'nizi korudu" derse: Ek bilgi → Yine de çalıştır (imzasız uygulama, normaldir).</span></div>
-        <div class="ku"><b>2 · Yapay zekayı kur (tek tık)</b><span>Uygulamada Ayarlar → "Yapay Zeka Kurulumu": Ollama'yı indir + AI modelini indir butonları. Komut satırı yok. Manuel giriş AI olmadan da çalışır.</span></div>
-        <div class="ku"><b>3 · İnternet (ilk açılış)</b><span>İlk açılışta güncel ilaç/muafiyet verisini otomatik indirir. Sonrası offline çalışır.</span></div>
+        <div class="ku"><b>1 · İndir &amp; Kur</b><span>Yukarıdaki butonla kurulum dosyasını indirin, çift tıklayıp "İleri" ile kurun (masaüstü kısayolu otomatik oluşur). Windows "PC'nizi korudu / SmartScreen" uyarısı verirse: <b>Ek bilgi → Yine de çalıştır</b> — uygulama imzasız olduğu için normaldir.</span></div>
+        <div class="ku"><b>2 · Lisansınızı girin</b><span>Uygulama açılınca size verilen lisans anahtarını girin. Lisans aktifse uygulama kullanıma hazırdır.</span></div>
+        <div class="ku"><b>3 · Yapay zekayı kurun (fotoğraf/PDF okuma için)</b><span>Reçete fotoğrafı veya PDF'ini otomatik okutmak istiyorsanız yapay zekayı kurun: <b>Ayarlar → Yapay Zeka Kurulumu</b>. Sırayla iki butona basın — <b>(a) Ollama'yı İndir</b> (yapay zeka altyapısı, bir kez kurulur) ve <b>(b) AI Modelini İndir</b> (model dosyası tek seferlik iner; internet hızınıza göre birkaç dakika sürebilir). Komut satırı veya teknik bilgi gerekmez, butonlar her şeyi yapar. Kurulum bittikten sonra yapay zeka çevrimdışı çalışır. <b>Not:</b> Yapay zeka olmadan da uygulama tam çalışır; bilgileri manuel form ile de girebilirsiniz.</span></div>
+        <div class="ku"><b>4 · İlk açılış (internet)</b><span>İlk açılışta güncel ilaç (EK-4/A) ve muafiyet (EK-4/D) listeleri otomatik iner; SUT ve kesinti kuralı güncellemeleri de açılışta otomatik gelir. Sonrasında reçete analizi çevrimdışı çalışır.</span></div>
       </div>
       <p class="note">Bu araç bir karar-destek aracıdır; kesin ödeme provizyonu MEDULA üzerinden yapılır. SUT verileri düzenli güncellenir.</p>
     </div>
