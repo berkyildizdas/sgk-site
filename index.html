@@ -184,7 +184,7 @@
       <a href="#fiyat">Fiyat</a>
       <a href="#sss">SSS</a>
     </div>
-    <a href="#indir" class="btn">İndir</a>
+    <a href="#kayit" class="btn">Kayıt Ol</a>
   </div>
 </nav>
 
@@ -194,8 +194,8 @@
     <h1 class="reveal">Reçeteyi yükle, <span class="grad">SGK ödeme kararını</span> saniyede gör.</h1>
     <p class="lead reveal">Eczacılar için akıllı reçete-rapor kontrol ve kesinti önleme aracı. Hasta ne kadar öder, SGK kesintisi olur mu? — Yapay zeka okur, kural motoru güncel SUT'a göre karar verir, gerçek saha vakalarından beslenen kesinti kütüphanesi sizi önceden uyarır.</p>
     <div class="cta reveal">
-      <a href="#indir" class="btn">⬇ Windows için İndir</a>
-      <a href="#fiyat" class="btn dark">Fiyatı Gör — Sınırsız Kullanım</a>
+      <a href="#kayit" class="btn">⬇ Kayıt Ol &amp; İndir</a>
+      <a href="#fiyat" class="btn dark">Fiyatı Gör</a>
     </div>
 
     <div class="mock reveal float" id="demo">
@@ -366,7 +366,7 @@
         <li>SUT değişikliği ve kesinti kütüphanesi güncellemeleri</li>
         <li>MEDULA entegrasyonu (yayınlandığında dahil)</li>
       </ul>
-      <a href="#indir" class="btn" style="font-size:16px;padding:14px 34px">Hemen Başla</a>
+      <a href="#kayit" class="btn" style="font-size:16px;padding:14px 34px">Hemen Başla — Kayıt Ol</a>
       <div style="margin-top:14px"><span class="abonelik-yok">✓ Kullandıkça artan ücret yok — analiz sayısı ne olursa olsun fiyat sabit</span></div>
       <p class="fiyat-not">Sahadaki tek bir kesinti vakası (örn. ~45.000 ₺) aylık ücretin 10 katı — yazılım kendini ilk yakaladığı kesintide amorti eder.</p>
     </div>
@@ -408,13 +408,40 @@
   </div>
 </section>
 
+<section id="kayit" style="background:#fff;border-block:1px solid var(--cizgi)">
+  <div class="wrap">
+    <div class="baslik reveal">
+      <div class="etiket">Kayıt</div>
+      <h2>Ön kayıt — lisans talebi</h2>
+      <p>Eczasist'i kullanmaya başlamak için kısa bir ön kayıt yapın. Başvurunuzu aldıktan sonra ödeme ve <b>lisans anahtarınız</b> için e-posta ile sizinle iletişime geçeceğiz.</p>
+    </div>
+    <form name="kayit" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/success.html" class="reveal" style="max-width:680px;margin:0 auto;text-align:left">
+      <input type="hidden" name="form-name" value="kayit" />
+      <p style="display:none"><label>Boş bırakın: <input name="bot-field" /></label></p>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">Eczane Adı*<input type="text" name="eczane_adi" required style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">Yetkili Ad Soyad*<input type="text" name="ad_soyad" required style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">E-posta*<input type="email" name="eposta" required style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">Telefon*<input type="tel" name="telefon" required style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">İl / İlçe<input type="text" name="il_ilce" style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+        <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155">GLN / Eczane No<input type="text" name="gln" style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400" /></label>
+      </div>
+      <label style="display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:600;color:#334155;margin-top:14px">Not (opsiyonel)<textarea name="mesaj" rows="3" style="padding:11px;border:1px solid #d1d5db;border-radius:8px;font-size:14px;font-weight:400;font-family:inherit"></textarea></label>
+      <div style="text-align:center;margin-top:20px">
+        <button type="submit" class="btn" style="font-size:16px;padding:14px 34px">Kayıt Ol — Lisans Talep Et</button>
+      </div>
+      <p class="note" style="text-align:center">Kaydınızı aldıktan sonra ödeme ve lisans anahtarı için e-posta ile döneceğiz. Sorularınız için: <a href="mailto:eczasist@gmail.com" style="color:var(--yesil2);font-weight:700">eczasist@gmail.com</a></p>
+    </form>
+  </div>
+</section>
+
 <section id="indir">
   <div class="wrap">
     <div class="indir reveal">
       <div class="etiket">İndir</div>
       <h2>Windows için indir</h2>
-      <p>Kur, çalıştır, kullanmaya başla.</p>
-      <a href="https://github.com/berkyildizdas/sgk-site/releases/download/v2.3.1/Eczasist-Setup-2.3.1.exe" class="btn" style="font-size:16px;padding:14px 30px">⬇ Eczasist Kurulum v2.3.1 (.exe)</a>
+      <p>Kurulum dosyasını indirmek için önce kısa bir ön kayıt yapın; lisans anahtarınızı e-posta ile gönderiyoruz.</p>
+      <a href="#kayit" class="btn" style="font-size:16px;padding:14px 30px">⬇ Kayıt Ol ve İndir (v2.3.1)</a>
       <div class="kurulum">
         <div class="ku"><b>1 · İndir &amp; Kur</b><span>Yukarıdaki butonla kurulum dosyasını indirin, çift tıklayıp "İleri" ile kurun (masaüstü kısayolu otomatik oluşur). Windows "PC'nizi korudu / SmartScreen" uyarısı verirse: <b>Ek bilgi → Yine de çalıştır</b> — uygulama imzasız olduğu için normaldir.</span></div>
         <div class="ku"><b>2 · Lisansınızı girin</b><span>Uygulama açılınca size verilen lisans anahtarını girin. Lisans aktifse uygulama kullanıma hazırdır.</span></div>
@@ -427,9 +454,36 @@
 </section>
 
 <footer>
-  <div class="wrap">
-    <div class="logo" style="justify-content:center;margin-bottom:10px"><span class="rx">℞</span> Eczasist</div>
-    Eczacılar için akıllı reçete-rapor kontrol aracı • Hasta verisi cihazdan çıkmaz • © 2026
+  <div class="wrap" style="display:grid;grid-template-columns:1.5fr 1fr 1fr 1.3fr;gap:30px;text-align:left;align-items:start">
+    <div>
+      <div class="logo" style="margin-bottom:12px"><span class="rx">℞</span> Eczasist</div>
+      <p style="font-size:14px;line-height:1.6;opacity:.75;margin:0">Eczacılar için akıllı reçete-rapor kontrol ve SGK kesinti önleme aracı. Hasta verisi bilgisayardan çıkmaz.</p>
+    </div>
+    <div>
+      <h4 style="font-size:13px;letter-spacing:.5px;text-transform:uppercase;opacity:.6;margin:0 0 14px">Ürün</h4>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+        <a href="#ozellikler" style="color:inherit;text-decoration:none;opacity:.85">Özellikler</a>
+        <a href="#fiyat" style="color:inherit;text-decoration:none;opacity:.85">Fiyatlandırma</a>
+        <a href="#indir" style="color:inherit;text-decoration:none;opacity:.85">Nasıl kurulur</a>
+        <a href="#sss" style="color:inherit;text-decoration:none;opacity:.85">Sık sorulan sorular</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="font-size:13px;letter-spacing:.5px;text-transform:uppercase;opacity:.6;margin:0 0 14px">Hesap</h4>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:14px">
+        <a href="#kayit" style="color:inherit;text-decoration:none;opacity:.85">Kayıt Ol</a>
+        <a href="#kayit" style="color:inherit;text-decoration:none;opacity:.85">İndir</a>
+        <a href="#kvkk" style="color:inherit;text-decoration:none;opacity:.85">KVKK</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="font-size:13px;letter-spacing:.5px;text-transform:uppercase;opacity:.6;margin:0 0 14px">İletişim</h4>
+      <p style="font-size:14px;line-height:1.6;opacity:.85;margin:0 0 8px"><b>BDY Yazılım</b></p>
+      <a href="mailto:eczasist@gmail.com" style="color:var(--yesil2);font-weight:700;font-size:14px;text-decoration:none">eczasist@gmail.com</a>
+    </div>
+  </div>
+  <div class="wrap" style="text-align:center;margin-top:28px;padding-top:18px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;opacity:.65">
+    © 2026 BDY Yazılım • Eczasist • Hasta verisi cihazdan çıkmaz
   </div>
 </footer>
 
