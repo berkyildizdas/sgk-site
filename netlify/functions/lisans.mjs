@@ -20,11 +20,25 @@
  */
 import crypto from "node:crypto";
 
+/* Netlify env'i çok satırlı PEM'i bazen tek satıra / "\n" literaline / boşluğa çevirir.
+   Bu normalizer hepsini geçerli PEM'e geri çevirir → anahtar yine de okunur. */
+function normalizePem(raw) {
+  if (!raw) return null;
+  let s = String(raw).trim().replace(/^["']|["']$/g, "").replace(/\\n/g, "\n");
+  const m = s.match(/-----BEGIN ([A-Z ]+)-----([\s\S]*?)-----END \1-----/);
+  if (m) {
+    const body = m[2].replace(/\s+/g, "");
+    const lines = (body.match(/.{1,64}/g) || [body]).join("\n");
+    return `-----BEGIN ${m[1]}-----\n${lines}\n-----END ${m[1]}-----`;
+  }
+  return s;
+}
+
 function imzala(payload) {
   const pem = process.env.IMZA_ANAHTAR_PEM;
   if (!pem) return null; // env yok → imzasız (geçiş modu)
   try {
-    const priv = crypto.createPrivateKey(pem);
+    const priv = crypto.createPrivateKey(normalizePem(pem));
     return crypto.sign(null, Buffer.from(payload, "utf8"), priv).toString("base64");
   } catch {
     return null; // anahtar bozuksa imzasız dön (app geçiş modunda kabul eder)
