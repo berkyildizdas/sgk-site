@@ -62,8 +62,16 @@ export default async (req) => {
   const key = String(body.key || "").trim().toUpperCase();
   if (!key) return cevap({ gecerli: false, mesaj: "Lisans anahtarı boş." });
 
+  // Lisanslar: önce env LISANS_KEYS (eski/sabit), üstüne Netlify Blobs (admin panelinden
+  // canlı düzenlenen) → Blobs öncelikli. Böylece panelden aç/kapa anında etki eder,
+  // env'deki mevcut key'ler de çalışmaya devam eder.
   let keys = {};
   try { keys = JSON.parse(process.env.LISANS_KEYS || "{}"); } catch {}
+  try {
+    const { getStore } = await import("@netlify/blobs");
+    const blob = await getStore("lisans").get("veri", { type: "json" });
+    if (blob && typeof blob === "object") keys = { ...keys, ...blob };
+  } catch { /* Blobs yoksa env ile devam */ }
 
   const kayit = keys[key];
   const bugun = new Date().toISOString().slice(0, 10);

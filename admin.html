@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Eczasist — Lisans Yönetimi</title>
+<style>
+  :root { --b:#2563eb; --bg:#f1f5f9; --kart:#fff; --ciz:#e2e8f0; --gri:#64748b; --yes:#16a34a; --kir:#dc2626; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:var(--bg); color:#0f172a; }
+  .wrap { max-width:760px; margin:0 auto; padding:24px 16px 60px; }
+  h1 { font-size:22px; margin:8px 0 4px; }
+  .alt { color:var(--gri); font-size:13px; margin-bottom:20px; }
+  .kart { background:var(--kart); border:1px solid var(--ciz); border-radius:14px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.05); }
+  label { display:block; font-size:13px; font-weight:600; color:#334155; margin-bottom:6px; }
+  input { width:100%; padding:11px 12px; border:1px solid var(--ciz); border-radius:10px; font-size:15px; outline:none; }
+  input:focus { border-color:var(--b); }
+  button { cursor:pointer; border:none; border-radius:10px; font-size:14px; font-weight:600; padding:11px 16px; }
+  .birincil { background:var(--b); color:#fff; }
+  .ac { background:var(--yes); color:#fff; }
+  .kapat { background:var(--kir); color:#fff; }
+  .ufak { padding:7px 12px; font-size:13px; }
+  .satir { display:flex; align-items:center; gap:10px; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:left; padding:10px 8px; border-bottom:1px solid var(--ciz); font-size:14px; }
+  th { color:var(--gri); font-size:12px; text-transform:uppercase; letter-spacing:.03em; }
+  .rozet { display:inline-block; padding:3px 9px; border-radius:99px; font-size:12px; font-weight:700; }
+  .r-ak { background:#dcfce7; color:#166534; }
+  .r-pa { background:#fee2e2; color:#991b1b; }
+  .mono { font-family:ui-monospace,Menlo,Consolas,monospace; }
+  .gizli { display:none; }
+  .uyari { font-size:13px; padding:10px 12px; border-radius:10px; margin-top:10px; }
+  .u-hata { background:#fee2e2; color:#991b1b; }
+  .yenikey { background:#ecfdf5; border:1px solid #a7f3d0; border-radius:12px; padding:14px; margin-top:12px; }
+  .yenikey .k { font-size:22px; font-weight:800; letter-spacing:1px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🔑 Eczasist — Lisans Yönetimi</h1>
+  <div class="alt">Lisansları aç/kapat ve yeni müşteri için key üret. Bu sayfa gizlidir.</div>
+
+  <!-- GİRİŞ -->
+  <div id="giris" class="kart">
+    <label>Şifre</label>
+    <div class="satir">
+      <input id="sifre" type="password" placeholder="Yönetici şifresi" onkeydown="if(event.key==='Enter')gir()" />
+      <button class="birincil" onclick="gir()">Giriş</button>
+    </div>
+    <div id="girisHata" class="uyari u-hata gizli"></div>
+  </div>
+
+  <!-- PANEL -->
+  <div id="panel" class="gizli">
+    <div class="kart">
+      <label>Yeni müşteri — eczane adı</label>
+      <div class="satir">
+        <input id="yeniAd" placeholder="Örn: Sera Eczanesi" onkeydown="if(event.key==='Enter')keyUret()" />
+        <button class="birincil" onclick="keyUret()">Key Üret</button>
+      </div>
+      <div id="yeniKeyKutu" class="yenikey gizli">
+        <div style="font-size:13px;color:#065f46;margin-bottom:6px">Yeni lisans anahtarı (<span id="ykAd"></span>) — müşteriye gönder:</div>
+        <div class="satir">
+          <span id="ykKey" class="k mono"></span>
+          <button class="ac ufak" onclick="kopyala()">Kopyala</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="kart">
+      <div class="satir" style="justify-content:space-between;margin-bottom:6px">
+        <b>Lisanslar</b>
+        <button class="ufak" style="background:#e2e8f0" onclick="listele()">Yenile</button>
+      </div>
+      <table>
+        <thead><tr><th>Eczane</th><th>Anahtar</th><th>Durum</th><th></th></tr></thead>
+        <tbody id="tablo"><tr><td colspan="4" style="color:#94a3b8">Yükleniyor…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "/.netlify/functions/admin";
+let SIFRE = "";
+
+async function cagir(payload) {
+  const r = await fetch(API, { method:"POST", headers:{ "content-type":"application/json" }, body: JSON.stringify({ sifre: SIFRE, ...payload }) });
+  return r.json();
+}
+
+async function gir() {
+  SIFRE = document.getElementById("sifre").value;
+  const h = document.getElementById("girisHata");
+  const d = await cagir({ action:"list" });
+  if (!d.ok) { h.textContent = d.hata || "Giriş başarısız"; h.classList.remove("gizli"); return; }
+  document.getElementById("giris").classList.add("gizli");
+  document.getElementById("panel").classList.remove("gizli");
+  ciz(d.liste);
+}
+
+async function listele() {
+  const d = await cagir({ action:"list" });
+  if (d.ok) ciz(d.liste);
+}
+
+function ciz(liste) {
+  const t = document.getElementById("tablo");
+  if (!liste.length) { t.innerHTML = '<tr><td colspan="4" style="color:#94a3b8">Henüz lisans yok</td></tr>'; return; }
+  t.innerHTML = liste.map(l => `
+    <tr>
+      <td>${esc(l.ad) || "<i style='color:#94a3b8'>(adsız)</i>"}</td>
+      <td class="mono" style="font-size:13px">${esc(l.key)}</td>
+      <td><span class="rozet ${l.aktif ? "r-ak" : "r-pa"}">${l.aktif ? "Aktif" : "Pasif"}</span></td>
+      <td style="text-align:right">
+        <button class="ufak ${l.aktif ? "kapat" : "ac"}" onclick="toggle('${esc(l.key)}')">${l.aktif ? "Kapat" : "Aç"}</button>
+      </td>
+    </tr>`).join("");
+}
+
+async function toggle(key) {
+  const d = await cagir({ action:"toggle", key });
+  if (d.ok) listele(); else alert(d.hata || "Hata");
+}
+
+async function keyUret() {
+  const ad = document.getElementById("yeniAd").value.trim();
+  if (!ad) { alert("Eczane adı gir"); return; }
+  const d = await cagir({ action:"ekle", ad });
+  if (!d.ok) { alert(d.hata || "Hata"); return; }
+  document.getElementById("ykAd").textContent = d.ad;
+  document.getElementById("ykKey").textContent = d.key;
+  document.getElementById("yeniKeyKutu").classList.remove("gizli");
+  document.getElementById("yeniAd").value = "";
+  listele();
+}
+
+function kopyala() {
+  const k = document.getElementById("ykKey").textContent;
+  navigator.clipboard?.writeText(k);
+  event.target.textContent = "Kopyalandı ✓";
+  setTimeout(() => { event.target.textContent = "Kopyala"; }, 1500);
+}
+
+function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c])); }
+</script>
+</body>
+</html>
