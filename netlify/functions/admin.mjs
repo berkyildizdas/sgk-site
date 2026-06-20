@@ -27,7 +27,8 @@ async function tumLisanslar(store) {
   let keys = {};
   try { keys = JSON.parse(process.env.LISANS_KEYS || "{}"); } catch {}
   try {
-    const blob = await store.get("veri", { type: "json" });
+    // strong: oku-değiştir-yaz döngüsünde bayat okuma olmasın (silme/kapatma kaybolmasın)
+    const blob = await store.get("veri", { type: "json", consistency: "strong" });
     if (blob && typeof blob === "object") keys = { ...keys, ...blob };
   } catch { /* blob yok */ }
   return keys;

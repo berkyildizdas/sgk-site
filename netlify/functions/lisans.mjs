@@ -69,7 +69,8 @@ export default async (req) => {
   try { keys = JSON.parse(process.env.LISANS_KEYS || "{}"); } catch {}
   try {
     const { getStore } = await import("@netlify/blobs");
-    const blob = await getStore("lisans").get("veri", { type: "json" });
+    // strong: panelden aç/kapa ANINDA yansısın (bayat okuma ile pasif lisans aktif görünmesin)
+    const blob = await getStore("lisans").get("veri", { type: "json", consistency: "strong" });
     if (blob && typeof blob === "object") keys = { ...keys, ...blob };
   } catch { /* Blobs yoksa env ile devam */ }
 
