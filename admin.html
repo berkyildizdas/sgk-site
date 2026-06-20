@@ -74,8 +74,8 @@
         <button class="ufak" style="background:#e2e8f0" onclick="listele()">Yenile</button>
       </div>
       <table>
-        <thead><tr><th>Eczane</th><th>Anahtar</th><th>Durum</th><th></th></tr></thead>
-        <tbody id="tablo"><tr><td colspan="4" style="color:#94a3b8">Yükleniyor…</td></tr></tbody>
+        <thead><tr><th>Eczane</th><th>Anahtar</th><th>Bu Ay</th><th>Durum</th><th></th></tr></thead>
+        <tbody id="tablo"><tr><td colspan="5" style="color:#94a3b8">Yükleniyor…</td></tr></tbody>
       </table>
     </div>
   </div>
@@ -107,11 +107,12 @@ async function listele() {
 
 function ciz(liste) {
   const t = document.getElementById("tablo");
-  if (!liste.length) { t.innerHTML = '<tr><td colspan="4" style="color:#94a3b8">Henüz lisans yok</td></tr>'; return; }
+  if (!liste.length) { t.innerHTML = '<tr><td colspan="5" style="color:#94a3b8">Henüz lisans yok</td></tr>'; return; }
   t.innerHTML = liste.map(l => `
     <tr>
       <td>${esc(l.ad) || "<i style='color:#94a3b8'>(adsız)</i>"}</td>
       <td class="mono" style="font-size:13px">${esc(l.key)}</td>
+      <td style="white-space:nowrap">${(l.buAy || 0).toLocaleString("tr")} <span style="color:#94a3b8;font-size:12px">okuma</span></td>
       <td><span class="rozet ${l.aktif ? "r-ak" : "r-pa"}">${l.aktif ? "Aktif" : "Pasif"}</span></td>
       <td style="text-align:right;white-space:nowrap">
         <button class="ufak ${l.aktif ? "kapat" : "ac"}" onclick="toggle('${esc(l.key)}')">${l.aktif ? "Kapat" : "Aç"}</button>

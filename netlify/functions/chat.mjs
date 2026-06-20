@@ -46,6 +46,14 @@ async function limitAsildi(key, max) {
     return false;
   } catch { return false; }
 }
+async function kullanimArtir(key) {
+  try {
+    const store = (await import("@netlify/blobs")).getStore("kullanim");
+    const id = `${key}:${new Date().toISOString().slice(0, 7)}`;
+    const n = (await store.get(id, { type: "json", consistency: "strong" })) || 0;
+    await store.setJSON(id, n + 1);
+  } catch { /* sayaç çökerse hizmeti kesme */ }
+}
 
 export default async (req) => {
   if (req.method === "OPTIONS") return new Response("", { headers: cors });
@@ -61,6 +69,7 @@ export default async (req) => {
   const lk = await lisansKontrol(lisans);
   if (!lk.gecerli) return cevap({ ok: false, hata: lk.mesaj }, 401);
   if (await limitAsildi(lisans, 60)) return cevap({ ok: false, hata: "Çok fazla istek — biraz sonra deneyin." }, 429);
+  await kullanimArtir(lisans);
 
   const apiKey = process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_KEY
     || process.env.CLAUDE_API_KEY || process.env.CLAUDE_KEY || process.env.API_KEY;

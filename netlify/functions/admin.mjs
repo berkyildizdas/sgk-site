@@ -49,9 +49,15 @@ export default async (req) => {
   const action = body.action;
 
   if (action === "list") {
-    const liste = Object.entries(keys)
-      .map(([key, v]) => ({ key, ad: v.ad || "", bitis: v.bitis || "", aktif: v.aktif !== false }))
-      .sort((a, b) => a.ad.localeCompare(b.ad, "tr"));
+    const ay = new Date().toISOString().slice(0, 7); // YYYY-MM
+    let kstore = null;
+    try { kstore = getStore("kullanim"); } catch { /* yok */ }
+    const liste = await Promise.all(Object.entries(keys).map(async ([key, v]) => {
+      let buAy = 0;
+      try { if (kstore) buAy = (await kstore.get(`${key}:${ay}`, { type: "json" })) || 0; } catch { /* 0 */ }
+      return { key, ad: v.ad || "", bitis: v.bitis || "", aktif: v.aktif !== false, buAy };
+    }));
+    liste.sort((a, b) => a.ad.localeCompare(b.ad, "tr"));
     return cevap({ ok: true, liste });
   }
 
