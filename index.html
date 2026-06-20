@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Eczasist — Eczacılar için Akıllı Reçete Kontrol & Kesinti Önleme</title>
-<meta name="description" content="Reçeteyi oku, SGK kesinti riskini saniyede gör ve önle. Kesinti motoru cihazında; veriniz açık rıza ve sıkı güvencelerle (eğitimde kullanılmaz, saklanmaz) işlenir. Ayda 3.499 TL, sınırsız kullanım." />
+<meta name="description" content="Reçeteyi oku, SGK kesinti riskini saniyede gör ve önle. Hasta adı ve T.C. yapay zekaya gönderilmeden cihazında karartılır — buluta yalnız anonim tıbbi veri gider. Kesinti motoru cihazında. Ayda 3.499 TL, sınırsız kullanım." />
 <style>
   :root{
     --yesil:#0B3D2E; --yesil2:#15795a; --acik:#22c55e; --acik2:#4ade80;
@@ -242,7 +242,7 @@
       <div class="feat reveal"><div class="ico">🤖</div><h3>Eczane Asistanı</h3><p>Sorunuzu yazın: asistan önce uygulamanın doğrulanmış kural tabanına bakar, sonra internette arar ve iki kaynağı karşılaştırarak cevaplar.</p></div>
       <div class="feat reveal"><div class="ico">💊</div><h3>8.429 Güncel İlaç</h3><p>SGK EK-4/A listesi her gün otomatik güncellenir. mg'leriyle ara, eşdeğerini gör.</p></div>
       <div class="feat reveal"><div class="ico">🔄</div><h3>Otomatik Güncelleme</h3><p>SUT ve ilaç listeleri değişince merkezi olarak güncellenir — her bilgisayara tek tek yükleme yok.</p></div>
-      <div class="feat reveal"><div class="ico">🔒</div><h3>KVKK & Güvenli İşleme</h3><p>Kesinti motoru cihazınızda. Reçete okuma adımı açık rızayla; veriniz eğitimde kullanılmaz, kısa sürede/sıfır saklamayla silinir.</p></div>
+      <div class="feat reveal"><div class="ico">🔒</div><h3>KVKK & Kimlik Koruması</h3><p>Hasta adı ve T.C., buluta gitmeden önce cihazınızda karartılır; yapay zekaya yalnız anonim tıbbi veri gider. Kesinti motoru cihazınızda, açık rızayla.</p></div>
       <div class="feat reveal"><div class="ico">📡</div><h3>MEDULA Entegrasyonu</h3><p>Barkod okut, reçete bilgisi MEDULA'dan gelsin, form otomatik dolsun. (Yakında — eczane testi aşamasında.)</p></div>
     </div>
   </div>
@@ -302,14 +302,14 @@
 
     <div class="kvkk-ust">
       <div class="kvkk-metin reveal">
-        <h3>Verinizi nasıl koruyoruz?</h3>
+        <h3>Hasta kimliği nasıl korunuyor?</h3>
         <p><b>Kesinti analizinin büyük kısmı cihazınızda çalışır.</b> SUT kural motoru, kesinti kütüphanesi ve hesaplamalar eczane bilgisayarınızda; bunlar için hiçbir yere veri gitmez.</p>
-        <p><b>Yalnızca reçeteyi OKUMA adımı</b> (görüntüden ilaç, tanı ve doz çıkarma) için, reçete görüntüsü <b>dünyaca güvenilen bir yapay zeka servisine (Anthropic)</b> anlık gönderilir. Bu serviste veriniz: <b>model eğitiminde asla kullanılmaz</b>, çok kısa sürede (Sıfır Saklama modunda anında) <b>silinir</b> ve <b>Veri İşleme Sözleşmesi (DPA)</b> ile sözleşmesel güvence altındadır.</p>
+        <p><b>Reçeteyi OKUMA adımında</b> görüntü bir yapay zeka servisine (Anthropic) gönderilir — <b>ancak gönderilmeden ÖNCE, hasta ADI ve T.C. KİMLİK NUMARASI sizin bilgisayarınızda otomatik olarak karartılır.</b> Yapay zekaya yalnızca <b>anonim tıbbi veri</b> (tanı/ICD-10, ilaç, doz, tarih) gider; hasta adı ve T.C. <b>gönderilmez</b> — bu veri tek başına bir hastayı tanımlamaz. Ek güvence olarak Anthropic verinizi <b>model eğitiminde kullanmaz</b>, kısa sürede <b>siler</b> ve <b>DPA</b> ile koruma altındadır.</p>
         <p><b>Açık rıza esastır:</b> Uygulama ilk kullanımda KVKK açık rıza ekranı gösterir; siz onaylamadan hiçbir görüntü gönderilmez. Rızayı dilediğiniz an Ayarlar'dan geri çekebilirsiniz. MEDULA şifreniz gibi bilgiler yalnızca cihazda, Windows'un şifreleme altyapısıyla saklanır — asla gönderilmez.</p>
       </div>
       <div class="guvence reveal">
         <div class="gu"><div class="ico">🧠</div><b>Kural motoru cihazda</b><span>Kesinti analizi, SUT kuralları ve hesaplamalar eczane bilgisayarınızda çalışır.</span></div>
-        <div class="gu"><div class="ico">🗑️</div><b>Saklanmaz, eğitilmez</b><span>Okuma için giden görüntü model eğitiminde kullanılmaz; kısa sürede / Sıfır Saklama modunda anında silinir.</span></div>
+        <div class="gu"><div class="ico">🛡️</div><b>Kimlik cihazda karartılır</b><span>Hasta adı ve T.C., buluta gönderilmeden önce bilgisayarınızda otomatik silinir → yapay zekaya yalnız anonim tıbbi veri gider.</span></div>
         <div class="gu"><div class="ico">✅</div><b>Açık rıza ile</b><span>Siz onaylamadan veri gönderilmez. Rızayı istediğiniz an geri çekebilirsiniz.</span></div>
         <div class="gu"><div class="ico">🔐</div><b>Şifreler cihazda şifreli</b><span>MEDULA gibi hassas bilgiler Windows'un kendi şifreleme altyapısıyla yalnızca o bilgisayarda saklanır.</span></div>
       </div>
@@ -321,6 +321,7 @@
           <tr><th></th><th>Tipik bulut sistemler</th><th>Eczasist</th></tr>
         </thead>
         <tbody>
+          <tr><td>Hasta adı / T.C. yapay zekaya gider mi?</td><td class="x">Evet — kimlikli görüntü yüklenir</td><td class="ec v">Hayır — cihazda karartılır, anonim gider</td></tr>
           <tr><td>Kesinti analizi nerede çalışır?</td><td class="x">Uzak sunucuda</td><td class="ec v">Cihazınızda (kural motoru lokal)</td></tr>
           <tr><td>Veri saklanıyor mu?</td><td class="x">Firmanın sunucusunda depolanır</td><td class="ec v">Okuma servisinde saklanmaz/kısa sürede silinir</td></tr>
           <tr><td>Veri model eğitiminde kullanılır mı?</td><td class="x">Çoğu zaman belirsiz</td><td class="ec v">Hayır — sözleşmeyle yasak</td></tr>
@@ -330,7 +331,7 @@
         </tbody>
       </table>
     </div>
-    <p class="note reveal" style="text-align:center">Eczasist hukuki danışmanlık vermez; eczanenin KVKK süreçleri (aydınlatma metni, veri sorumlusu yükümlülükleri) kendi sorumluluğundadır. Eczasist; veriyi yalnız okuma adımında, açık rıza ve sıkı işleyici güvenceleriyle (eğitimde kullanmama, kısa/sıfır saklama, DPA) işleyerek riski en aza indirir.</p>
+    <p class="note reveal" style="text-align:center">Eczasist hukuki danışmanlık vermez; eczanenin KVKK süreçleri (aydınlatma metni, veri sorumlusu yükümlülükleri) kendi sorumluluğundadır. Eczasist; hasta kimliğini (ad, T.C.) cihazda karartıp yapay zekaya yalnız anonim tıbbi veri göndererek, ayrıca açık rıza ve sıkı işleyici güvenceleriyle (eğitimde kullanmama, kısa/sıfır saklama, DPA) riski en aza indirir.</p>
   </div>
 </section>
 
@@ -382,11 +383,11 @@
     <div class="sss reveal">
       <details>
         <summary>Hasta verileri nereye gidiyor?</summary>
-        <div class="icerik">Kesinti analizi, kural motoru ve hesaplamalar bilgisayarınızda çalışır. Yalnızca reçeteyi <b>okuma</b> adımında (görüntüden ilaç/tanı/doz çıkarma) reçete görüntüsü, güvenilir bir yapay zeka servisine (Anthropic) anlık gönderilir. Orada veriniz <b>model eğitiminde kullanılmaz</b>, çok kısa sürede (Sıfır Saklama modunda anında) <b>silinir</b> ve sözleşmeyle (DPA) korunur. MEDULA şifreniz yalnızca cihazda şifreli saklanır, asla gönderilmez.</div>
+        <div class="icerik">Kesinti analizi, kural motoru ve hesaplamalar bilgisayarınızda çalışır. Yalnızca reçeteyi <b>okuma</b> adımında reçete görüntüsü yapay zeka servisine (Anthropic) gönderilir — <b>ancak hasta adı ve T.C. gönderilmeden önce cihazınızda otomatik karartılır</b>; buluta yalnız anonim tıbbi veri (tanı/ilaç/doz/tarih) gider, hasta adı ve T.C. gitmez. Ek güvence: veriniz model eğitiminde kullanılmaz, kısa sürede silinir ve DPA ile korunur. MEDULA şifreniz yalnızca cihazda şifreli saklanır, asla gönderilmez.</div>
       </details>
       <details>
         <summary>KVKK'ya nasıl uyumlu oluyorsunuz?</summary>
-        <div class="icerik">Sağlık verisi KVKK Madde 6 kapsamında özel nitelikli kişisel veridir. Eczasist; veriyi yalnız okuma adımında, <b>açık rızanızla</b> (uygulamadaki KVKK onay ekranı — istediğiniz an geri çekilebilir) ve sıkı işleyici güvenceleriyle (eğitimde kullanmama, kısa/sıfır saklama, DPA) işler. Aydınlatma metni ve veri sorumlusu yükümlülükleri eczanenin kendi sorumluluğundadır. Detaylar için yukarıdaki <a href="#kvkk" style="color:var(--yesil2);font-weight:700">KVKK bölümüne</a> bakın.</div>
+        <div class="icerik">Sağlık verisi KVKK Madde 6 kapsamında özel nitelikli kişisel veridir. Eczasist'te hasta <b>adı ve T.C.</b> reçete okuma sırasında <b>buluta gönderilmeden önce cihazınızda karartılır</b>; yapay zekaya yalnız <b>anonim tıbbi veri</b> gider (kişiyi tanımlamaz). Bunun üstüne, işleme <b>açık rızanızla</b> (istediğiniz an geri çekilebilir) ve sıkı güvencelerle (eğitimde kullanmama, kısa/sıfır saklama, DPA) yapılır. Aydınlatma metni ve veri sorumlusu yükümlülükleri eczanenin kendi sorumluluğundadır. Detaylar için yukarıdaki <a href="#kvkk" style="color:var(--yesil2);font-weight:700">KVKK bölümüne</a> bakın.</div>
       </details>
       <details>
         <summary>İnternet bağlantısı gerekiyor mu?</summary>
