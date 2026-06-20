@@ -72,5 +72,12 @@ export default async (req) => {
     return cevap({ ok: true, key: yeni, ad });
   }
 
+  if (action === "sil") {
+    const k = String(body.key || "");
+    // Blobs'tan kaldır. (NOT: env LISANS_KEYS'teki sabit key'ler silinemez, geri gelir → onları KAPAT kullan.)
+    if (keys[k]) { delete keys[k]; await store.setJSON("veri", keys); }
+    return cevap({ ok: true, key: k });
+  }
+
   return cevap({ ok: false, hata: "Bilinmeyen işlem" });
 };

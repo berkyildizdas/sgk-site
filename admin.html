@@ -113,14 +113,21 @@ function ciz(liste) {
       <td>${esc(l.ad) || "<i style='color:#94a3b8'>(adsız)</i>"}</td>
       <td class="mono" style="font-size:13px">${esc(l.key)}</td>
       <td><span class="rozet ${l.aktif ? "r-ak" : "r-pa"}">${l.aktif ? "Aktif" : "Pasif"}</span></td>
-      <td style="text-align:right">
+      <td style="text-align:right;white-space:nowrap">
         <button class="ufak ${l.aktif ? "kapat" : "ac"}" onclick="toggle('${esc(l.key)}')">${l.aktif ? "Kapat" : "Aç"}</button>
+        <button class="ufak" style="background:#f1f5f9;color:#64748b" onclick="sil('${esc(l.key)}','${esc(l.ad)}')">Sil</button>
       </td>
     </tr>`).join("");
 }
 
 async function toggle(key) {
   const d = await cagir({ action:"toggle", key });
+  if (d.ok) listele(); else alert(d.hata || "Hata");
+}
+
+async function sil(key, ad) {
+  if (!confirm(`"${ad || key}" lisansını SİL? (Sabit/env key'ler silinmez, onları Kapat kullan.)`)) return;
+  const d = await cagir({ action:"sil", key });
   if (d.ok) listele(); else alert(d.hata || "Hata");
 }
 
