@@ -17,10 +17,42 @@
 const cors = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
-  "Access-Control-Allow-Headers": "Content-Type, x-app-secret",
+  "Access-Control-Allow-Headers": "Content-Type, x-app-secret, x-lisans",
   "Content-Type": "application/json; charset=utf-8",
 };
 const cevap = (obj, status = 200) => new Response(JSON.stringify(obj), { status, headers: cors });
+
+/* ── LİSANS KAPISI + HIZ SINIRI ──
+   Yalnız geçerli+AKTİF lisanslı uygulama hizmet alır → URL'i bulan rastgele biri senin
+   Anthropic kontörünü harcayamaz. Sızan key'i admin panelinden "Kapat" → anında erişimi biter. */
+async function lisanslariYukle() {
+  let keys = {};
+  try { keys = JSON.parse(process.env.LISANS_KEYS || "{}"); } catch {}
+  try {
+    const { getStore } = await import("@netlify/blobs");
+    const blob = await getStore("lisans").get("veri", { type: "json", consistency: "strong" });
+    if (blob && typeof blob === "object") keys = { ...keys, ...blob };
+  } catch { /* env ile devam */ }
+  return keys;
+}
+async function lisansKontrol(key) {
+  if (!key) return { gecerli: false, mesaj: "Lisans gerekli (uygulamayı güncelleyin)." };
+  const r = (await lisanslariYukle())[key];
+  if (!r) return { gecerli: false, mesaj: "Geçersiz lisans." };
+  if (r.aktif === false) return { gecerli: false, mesaj: "Lisans pasif." };
+  if (r.bitis && r.bitis < new Date().toISOString().slice(0, 10)) return { gecerli: false, mesaj: "Lisans süresi doldu." };
+  return { gecerli: true };
+}
+async function limitAsildi(key, max) {
+  try {
+    const store = (await import("@netlify/blobs")).getStore("ratelimit");
+    const id = `${key}:${Math.floor(Date.now() / 60000)}`;
+    const n = (await store.get(id, { type: "json", consistency: "strong" })) || 0;
+    if (n >= max) return true;
+    await store.setJSON(id, n + 1);
+    return false;
+  } catch { return false; } // limit altyapısı çökerse hizmeti kesme
+}
 
 export default async (req) => {
   if (req.method === "OPTIONS") return new Response("", { headers: cors });
@@ -31,6 +63,12 @@ export default async (req) => {
   if (beklenen && req.headers.get("x-app-secret") !== beklenen) {
     return cevap({ ok: false, hata: "Yetkisiz istek." }, 401);
   }
+
+  // LİSANS KAPISI: geçerli + aktif lisans şart (kontör kötüye kullanımını engeller)
+  const lisans = String(req.headers.get("x-lisans") || "").trim().toUpperCase();
+  const lk = await lisansKontrol(lisans);
+  if (!lk.gecerli) return cevap({ ok: false, hata: lk.mesaj }, 401);
+  if (await limitAsildi(lisans, 60)) return cevap({ ok: false, hata: "Çok fazla istek — biraz sonra deneyin." }, 429);
 
   // Anahtar farklı isimle kayıtlı olabilir — yaygın adları sırayla dene.
   const apiKey = process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_KEY
